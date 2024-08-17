@@ -11,6 +11,7 @@ env:
 jobs:
   lint:
     name: Run lint frontend
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./starter/frontend
