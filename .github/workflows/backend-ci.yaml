@@ -1,0 +1,39 @@
+name: backend-ci
+
+on:
+  pull_request:
+    branches:
+      - main
+
+env:
+  PYTHON_VER: 3.11
+  IMAGE_REPO: backend
+
+jobs:
+  run-lint-test:
+    name: Run lint backend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./starter/backend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup python environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{env.PYTHON_VER}}
+      
+      - name: Install pipenv and flake8
+        run: |
+          pip install pipenv flake8
+      
+      - name: Install dependencies package
+        run: |
+          pipenv install
+      
+      - name: Run lint and test
+        run: |
+          pipenv run lint
+          pipenv run test
