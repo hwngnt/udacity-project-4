@@ -8,6 +8,7 @@ on:
 env:
   PYTHON_VER: 3.10.12
 
+
 jobs:
   lint:
     name: Run lint backend
