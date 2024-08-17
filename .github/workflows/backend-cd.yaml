@@ -18,10 +18,6 @@ jobs:
       run:
         working-directory: ./starter/backend
     steps:
-      - name: Check version Ubuntu
-        run: 
-          lsb_release -a
-
       - name: Checkout repository code
         uses: actions/checkout@v3
       
