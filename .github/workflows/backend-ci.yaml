@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  PYTHON_VER: 3.10
+  PYTHON_VER: 3.10.0
 
 jobs:
   run-lint-test:
