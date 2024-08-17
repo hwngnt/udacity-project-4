@@ -1,0 +1,4 @@
+# URL test api backend
+http://a88ff58ec091f4399b1ff86f2397e28e-1793167679.us-east-1.elb.amazonaws.com/movies
+# URL test api frontend
+http://ae8d9de7cb13246e196b2025bc5ade33-673111575.us-east-1.elb.amazonaws.com/
