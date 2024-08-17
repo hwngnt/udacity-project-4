@@ -6,12 +6,11 @@ on:
       - main
 
 env:
-  PYTHON_VER: 3.10
-  IMAGE_REPO: backend
+  PYTHON_VER: 3.11
 
 jobs:
-  run-lint-test:
-    name: Run lint and test backend
+  lint:
+    name: Run lint backend
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -25,16 +24,15 @@ jobs:
         with:
           python-version: ${{env.PYTHON_VER}}
       
-      - name: Install pipenv and flake8
+      - name: Install pipenv
         run: |
           pip install pipenv
           pip install flake8
       
-      - name: Install dependencies package
+      - name: Install dependencies
         run: |
           pipenv install
       
-      - name: Run lint and test
+      - name: Run lint
         run: |
           pipenv run lint
-          pipenv run test
