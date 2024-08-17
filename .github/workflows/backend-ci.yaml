@@ -1,13 +1,12 @@
-name: backend-continuous-integration
+name: backend-ci
 
 on:
-  workflow_dispatch:
   pull_request:
     branches:
       - main
 
 env:
-  PYTHON_VERSION: 3.11
+  PYTHON_VER: 3.11.0
 
 jobs:
   lint:
@@ -23,7 +22,7 @@ jobs:
       - name: Setup python environment
         uses: actions/setup-python@v4
         with:
-          python-version: ${{env.PYTHON_VERSION}}
+          python-version: ${{env.PYTHON_VER}}
       
       - name: Install pipenv
         run: |
