@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  PYTHON_VER: 3.11
+  PYTHON_VER: 3.10
   IMAGE_REPO: backend
 
 jobs:
