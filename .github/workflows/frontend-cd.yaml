@@ -49,11 +49,9 @@ jobs:
         working-directory: ./starter/frontend
     steps:
       - name: Checkout repository code
-        run: echo "Checkout repository code"
         uses: actions/checkout@v3
       
       - name: Configure AWS credential use action
-        run: echo "Configure AWS credential"
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
