@@ -52,7 +52,7 @@ jobs:
         run: echo "Checkout repository code"
         uses: actions/checkout@v3
       
-      - name: Configure AWS credential
+      - name: Configure AWS credential use action
         run: echo "Configure AWS credential"
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -60,3 +60,16 @@ jobs:
           aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
           aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
           aws-region: us-east-1
+
+      - name: Login AWS ECR use action
+        uses: aws-actions/amazon-ecr-login@v2
+        with: 
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
+          aws-region: us-east-1
+
+      - name: Build, tag and push docker image to AWS ECR
+        run: |
+          aws eks update-kubeconfig --name cluster
+          kubectl get svc
