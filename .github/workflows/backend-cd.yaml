@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  PYTHON_VER: 3.10.0
+  PYTHON_VER: 3.12
   IMAGE_REPO_BE: backend
   IMAGE_TAG: latest
 
