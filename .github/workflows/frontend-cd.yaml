@@ -71,3 +71,4 @@ jobs:
         run: |
           aws eks update-kubeconfig --name cluster
           kubectl get svc
+          
