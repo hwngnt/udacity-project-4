@@ -19,14 +19,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       
-      - name: Setup Nodejs environment
+      - name: Setup Nodejs env
         uses: actions/setup-node@v3
         with:
           node-version: ${{env.NODE_VER}}
 
-      - name: Install dependencies
+      - name: Install dependencies package prettier
         run: |
           npm install
+          npm install prettier@2.8.8 --save-dev
         
       - name: Run lint
         run: |
