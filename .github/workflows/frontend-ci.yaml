@@ -1,0 +1,42 @@
+name: frontend-ci
+
+on:
+  pull_request:
+    branches:
+      - main
+
+env:
+  NODE_VER: 14
+
+jobs:
+  run-lint-test:
+    name: Run lint frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./starter/frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Setup Nodejs env
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{env.NODE_VER}}
+
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies package prettier
+        run: |
+          npm install
+          npm install prettier@2.8.8 --save-dev
+        
+      - name: Run lint
+        run: |
+          npm run lint
+          npm run test
