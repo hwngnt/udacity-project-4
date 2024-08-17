@@ -11,7 +11,7 @@ env:
 
 jobs:
   run-lint-test:
-    name: Run lint backend
+    name: Run lint and test backend
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -27,7 +27,8 @@ jobs:
       
       - name: Install pipenv and flake8
         run: |
-          pip install pipenv flake8
+          pip install pipenv
+          pip install flake8
       
       - name: Install dependencies package
         run: |
