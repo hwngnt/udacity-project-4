@@ -80,6 +80,7 @@ jobs:
     defaults:
       run:
         working-directory: ./starter/frontend
+        
     steps:
       - name: Checkout repository code
         uses: actions/checkout@v3
