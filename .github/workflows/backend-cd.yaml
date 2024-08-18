@@ -1,7 +1,7 @@
 name: backend-cd
 
 on:
-  pull_request:
+  push:
     branches:
       - main
 
@@ -11,8 +11,8 @@ env:
   IMAGE_TAG: latest
 
 jobs:
-  run-lint-test:
-    name: Run lint and test backend
+  lint:
+    name: Run lint for backend
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -35,14 +35,42 @@ jobs:
         run: |
           pipenv install
       
-      - name: Run lint
+      - name: Run lint backend
         run: |
           pipenv run lint
+
+  test:
+    name: Run test for backend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./starter/backend
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v3
+      
+      - name: Setup python environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{env.PYTHON_VER}}
+      
+      - name: Install pipenv
+        run: |
+          pip install pipenv
+          pip install flake8
+      
+      - name: Install dependencies package
+        run: |
+          pipenv install
+      
+      - name: Run test backend
+        run: |
           pipenv run test
-  build-deploy:
+
+  build:
     name: Build, tag and push docker image to aws ecr
     runs-on: ubuntu-latest
-    needs: [run-lint-test]
+    needs: [lint, test]
     defaults:
       run: 
         working-directory: ./starter/backend
