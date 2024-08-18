@@ -1,7 +1,7 @@
 name: frontend-cd
 
 on:
-  pull_request:
+  push:
     branches:
       - main
 
@@ -11,8 +11,8 @@ env:
   IMAGE_TAG: latest
 
 jobs:
-  run-lint-test:
-    name: Run lint frontend
+  lint:
+    name: Run lint for frontend
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -26,7 +26,7 @@ jobs:
         with:
           node-version: ${{env.NODE_VER}}
 
-      - name: Cache dependencies
+      - name: Cache dependencies package
         id: cache
         uses: actions/cache@v3
         with:
@@ -41,11 +41,42 @@ jobs:
       - name: Run lint
         run: |
           npm run lint
+
+  test:
+    name: Run test for frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./starter/frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Setup Nodejs env
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{env.NODE_VER}}
+
+      - name: Cache dependencies package
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies package prettier
+        run: |
+          npm install
+          npm install prettier@2.8.8 --save-dev
+        
+      - name: Run test frontend
+        run: |
           npm run test
-  deploy-to-ecr:
+
+  build:
     name: Build, tag and push docker image to AWS ECR
     runs-on: ubuntu-latest
-    needs: [run-lint-test]
+    needs: [lint, test]
     defaults:
       run:
         working-directory: ./starter/frontend

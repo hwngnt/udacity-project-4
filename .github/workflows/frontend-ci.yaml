@@ -7,16 +7,17 @@ on:
 
 env:
   NODE_VER: 14
+  IMAGE_REPO_FE: frontend
 
 jobs:
-  run-lint-test:
-    name: Run lint frontend
+  lint:
+    name: Run lint for frontend
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./starter/frontend
     steps:
-      - name: Checkout code
+      - name: Checkout repository code
         uses: actions/checkout@v2
       
       - name: Setup Nodejs env
@@ -24,7 +25,7 @@ jobs:
         with:
           node-version: ${{env.NODE_VER}}
 
-      - name: Cache dependencies
+      - name: Cache dependencies package
         id: cache
         uses: actions/cache@v3
         with:
@@ -36,7 +37,52 @@ jobs:
           npm install
           npm install prettier@2.8.8 --save-dev
         
-      - name: Run lint
+      - name: Run lint frontend
         run: |
           npm run lint
+          
+  test:
+    name: Run test for frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./starter/frontend
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v2
+      
+      - name: Setup Nodejs env
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{env.NODE_VER}}
+
+      - name: Cache dependencies package
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies package prettier
+        run: |
+          npm install
+          npm install prettier@2.8.8 --save-dev
+        
+      - name: Run test frontend
+        run: |
           npm run test
+  build:
+    name: Build docker image for frontend
+    needs: [lint, test]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./starter/frontend
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v3
+      
+      - name: Build docker image frontend
+        run: |
+          docker build -t ${{env.IMAGE_REPO_FE}} .
+          
